@@ -92,7 +92,7 @@ def main():
 
         # Remove the temporary uploaded files
         for file_path in file_paths:
-        os.remove(file_path)
+            os.remove(file_path)
 
 
 if __name__ == "__main__":
