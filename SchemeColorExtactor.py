@@ -3,6 +3,7 @@ from PIL import Image
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
+import os
 
 
 def extract_color_scheme(image_path, num_colors):
@@ -55,9 +56,9 @@ def generate_color_scheme_df(file_paths, num_colors):
     return df
 
 
-def save_color_schemes_to_excel(df, output_path):
-    # Save the DataFrame to an Excel file
-    df.to_excel(output_path, index=False)
+def save_color_schemes_to_csv(df, output_path):
+    # Save the DataFrame to a CSV file
+    df.to_csv(output_path, index=False)
 
 
 def main():
@@ -73,25 +74,4 @@ def main():
         # Process the uploaded images and generate the color schemes DataFrame
         file_paths = []
         for uploaded_file in uploaded_files:
-            # Save the uploaded file temporarily
-            with open(uploaded_file.name, "wb") as f:
-                f.write(uploaded_file.getbuffer())
-                file_paths.append(uploaded_file.name)
-
-        df = generate_color_scheme_df(file_paths, num_colors=5)
-
-        # Display the color schemes as a table
-        st.write(df)
-
-        # Allow the user to download the color schemes as an Excel file
-        output_path = "color_schemes.xlsx"
-        save_color_schemes_to_excel(df, output_path)
-        st.download_button("Download Color Schemes", output_path)
-
-        # Remove the temporary uploaded files
-        for file_path in file_paths:
-            os.remove(file_path)
-
-
-if __name__ == "__main__":
-    main()
+            # Save
