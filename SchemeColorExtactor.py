@@ -69,7 +69,7 @@ def main():
     uploaded_files = st.file_uploader("Upload Images", accept_multiple_files=True)
 
     if uploaded_files:
-    st.write("Generating color schemes...")
+       st.write("Generating color schemes...")
 
     # Process the uploaded images and generate the color schemes DataFrame
     file_paths = []
