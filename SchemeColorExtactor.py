@@ -1,43 +1,97 @@
 import streamlit as st
+from PIL import Image
 import pandas as pd
-import altair as alt
+import numpy as np
+from sklearn.cluster import KMeans
 
-# Function to generate bar chart from DataFrame
-def generate_bar_chart(df):
-    chart = alt.Chart(df).mark_bar().encode(
-        x='Category',
-        y='Value'
-    ).properties(
-        width=600,
-        height=400
-    )
-    return chart
 
-# Main Streamlit app code
+def extract_color_scheme(image_path, num_colors):
+    # Load the image using PIL
+    image = Image.open(image_path)
+
+    # Convert the image to RGB mode if it's not already in RGB
+    image = image.convert("RGB")
+
+    # Resize the image to a smaller size for faster processing
+    resized_image = image.resize((100, 100))
+
+    # Convert the resized image to a numpy array
+    image_array = np.array(resized_image)
+
+    # Reshape the image array to a 2D array of pixels
+    pixel_array = image_array.reshape(-1, 3)
+
+    # Perform K-means clustering to find the dominant colors
+    kmeans = KMeans(n_clusters=num_colors)
+    kmeans.fit(pixel_array)
+    colors = kmeans.cluster_centers_
+
+    # Convert the colors to integer values
+    colors = colors.astype(int)
+
+    return colors
+
+
+def generate_color_scheme_df(file_paths, num_colors):
+    color_schemes = []
+
+    for file_path in file_paths:
+        try:
+            # Extract color scheme from each image
+            colors = extract_color_scheme(file_path, num_colors)
+
+            # Convert the colors to hexadecimal format
+            hex_colors = ['#%02x%02x%02x' % (color[0], color[1], color[2]) for color in colors]
+
+            # Store the file name and color scheme in a dictionary
+            color_scheme = {'File Name': file_path, 'Color Scheme': hex_colors}
+            color_schemes.append(color_scheme)
+        except Exception as e:
+            print(f"Error processing image {file_path}: {str(e)}")
+
+    # Create a pandas DataFrame from the color schemes
+    df = pd.DataFrame(color_schemes)
+
+    return df
+
+
+def save_color_schemes_to_excel(df, output_path):
+    # Save the DataFrame to an Excel file
+    df.to_excel(output_path, index=False)
+
+
 def main():
-    # Set app title and header
-    st.set_page_config(page_title="Bar Chart Generator", page_icon=":bar_chart:")
-    st.title("Bar Chart Generator")
+    st.title("Image Color Scheme Generator")
+    st.write("Upload images to generate color schemes.")
 
-    # Upload CSV file
-    st.sidebar.title("Upload CSV file")
-    file = st.sidebar.file_uploader("Choose a CSV file", type="csv")
-    
-    # If file is uploaded, read data and generate bar chart
-    if file is not None:
-        df = pd.read_csv(file)
-        st.write("Original Data:")
+    # Allow the user to upload multiple images
+    uploaded_files = st.file_uploader("Upload Images", accept_multiple_files=True)
+
+    if uploaded_files:
+        st.write("Generating color schemes...")
+
+        # Process the uploaded images and generate the color schemes DataFrame
+        file_paths = []
+        for uploaded_file in uploaded_files:
+            # Save the uploaded file temporarily
+            with open(uploaded_file.name, "wb") as f:
+                f.write(uploaded_file.getbuffer())
+                file_paths.append(uploaded_file.name)
+
+        df = generate_color_scheme_df(file_paths, num_colors=5)
+
+        # Display the color schemes as a table
         st.write(df)
-        chart = generate_bar_chart(df)
-        st.write("Bar Chart:")
-        st.altair_chart(chart, use_container_width=True)
-        
-        # Add download link for bar chart data as CSV
-        csv = df.to_csv(index=False)
-        href = f'<a href="data:file/csv;base64,{b64encode(csv.encode()).decode()}" download="bar_chart_data.csv">Download Bar Chart Data</a>'
-        st.markdown(href, unsafe_allow_html=True)
 
-# Run the app
+        # Allow the user to download the color schemes as an Excel file
+        output_path = "color_schemes.xlsx"
+        save_color_schemes_to_excel(df, output_path)
+        st.download_button("Download Color Schemes", output_path)
+
+        # Remove the temporary uploaded files
+        for file_path in file_paths:
+            os.remove(file_path)
+
+
 if __name__ == "__main__":
     main()
-
