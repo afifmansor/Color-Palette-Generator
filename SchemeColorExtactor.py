@@ -1,6 +1,4 @@
 import streamlit as st
-import sklearn
-import sklearn
 from PIL import Image
 import pandas as pd
 import numpy as np
