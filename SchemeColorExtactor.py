@@ -74,4 +74,4 @@ def main():
         # Process the uploaded images and generate the color schemes DataFrame
         file_paths = []
         for uploaded_file in uploaded_files:
-# Save
+
