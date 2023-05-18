@@ -1,4 +1,5 @@
 import streamlit as st
+import base64
 from PIL import Image
 import pandas as pd
 import numpy as np
@@ -83,14 +84,15 @@ def main():
         # Display the color schemes as a table
         st.write(df)
 
-        # Allow the user to download the color schemes as an csv file
-        output_path = color_schemes.csv
-        save_color_schemes_to_csv(df, output_path)
-        st.download_button("Download Color Schemes", output_path)
+        # Allow the user to download the color schemes as a CSV file
+        csv_data = df.to_csv(index=False)
+        b64 = base64.b64encode(csv_data.encode()).decode()
+        href = f'<a href="data:file/csv;base64,{b64}" download="color_schemes.csv">Download CSV File</a>'
+        st.markdown(href, unsafe_allow_html=True)
 
         # Remove the temporary uploaded files
         for file_path in file_paths:
-            os.remove(file_path)
+        os.remove(file_path)
 
 
 if __name__ == "__main__":
