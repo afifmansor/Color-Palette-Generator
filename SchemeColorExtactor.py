@@ -83,8 +83,8 @@ def main():
         # Display the color schemes as a table
         st.write(df)
 
-        # Allow the user to download the color schemes as an Excel file
-        output_path = "color_schemes.csv"
+        # Allow the user to download the color schemes as an csv file
+        output_path = color_schemes.csv
         save_color_schemes_to_csv(df, output_path)
         st.download_button("Download Color Schemes", output_path)
 
