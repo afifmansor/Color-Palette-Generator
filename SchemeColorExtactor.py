@@ -64,7 +64,7 @@ def save_color_schemes_to_csv(df, output_path):
 
 def main():
     image = Image.open('invoke_logo.jpg')  
-    st.image(image, caption="Invoke Logo", use_column_width=True)
+    st.image(image, caption="Version 190523", use_column_width=True)
     st.title("Image Color Scheme Generator")
     st.write("Upload images to generate color schemes.")
 
