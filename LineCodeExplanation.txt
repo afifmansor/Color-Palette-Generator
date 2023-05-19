@@ -1,0 +1,11 @@
+module "base64"
+the base64 module is used to encode the generated DataFrame into a CSV format 
+and provide a download link for the user to download the color schemes as a CSV file. 
+The encoded CSV data is embedded in an HTML anchor tag (<a>) 
+using the href attribute, allowing the user to download the file when clicked.
+
+module "os"
+The os module is a powerful tool for interacting with the underlying operating 
+system and enables you to perform a wide range of tasks related to file and 
+directory operations, environment variables, process management, and more 
+in a cross-platform manner.
