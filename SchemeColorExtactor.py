@@ -58,18 +58,18 @@ def generate_color_scheme_df(file_paths, num_colors):
 
 
 def save_color_schemes_to_csv(df, output_path):
-    # Save the DataFrame to an Excel file
+    # Save the DataFrame to a CSV file
     df.to_csv(output_path, index=False)
 
 
 def main():
-    image = Image.open('invoke_logo.jpg')  
+    image = Image.open('invoke_logo.jpg')
     st.image(image, caption="Version 190523", use_column_width=True)
     st.title("Image Color Scheme Generator")
     st.write("Upload images to generate color schemes.")
 
     # Allow the user to upload multiple images
-    uploaded_files = st.file_uploader("Upload Images", accept_multiple_files=True)
+    uploaded_files = st.file_uploader("Upload Images", accept_multiple_files=True, type=['png', 'jpeg', 'jpg'])
 
     if uploaded_files:
         st.write("Generating color schemes...")
@@ -95,8 +95,4 @@ def main():
 
         # Remove the temporary uploaded files
         for file_path in file_paths:
-            os.remove(file_path)
-
-
-if __name__ == "__main__":
-    main()
+            os.remove(file
