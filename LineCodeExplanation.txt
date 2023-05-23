@@ -9,8 +9,3 @@ The os module is a powerful tool for interacting with the underlying operating
 system and enables you to perform a wide range of tasks related to file and 
 directory operations, environment variables, process management, and more 
 in a cross-platform manner.
-
-
-# Reference
-### Color Identification in Images
-https://towardsdatascience.com/color-identification-in-images-machine-learning-application-b26e770c4c71
