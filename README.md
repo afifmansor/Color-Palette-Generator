@@ -15,3 +15,8 @@ Here's how the Color-Palette-Generator works:
 6. Temporary File Handling: The uploaded images are temporarily saved on the server and later removed to ensure clean-up and privacy.
 
 Overall, the Color-Palette-Generator provides a convenient way for users to extract and explore dominant color schemes from their images. It can be useful for various applications such as graphic design, web development, or any project requiring color inspiration.
+
+
+# Reference
+### Color Identification in Images
+https://towardsdatascience.com/color-identification-in-images-machine-learning-application-b26e770c4c71
